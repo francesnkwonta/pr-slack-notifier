@@ -1,0 +1,45 @@
+name: PR Slack Notifier
+
+on:
+  schedule:
+    # Every ~10 minutes. GitHub may delay/skip cron under load; this is best-effort.
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: pr-notify
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Rolling cache: restore the most recent state, save a fresh key each run.
+      - name: Restore dedupe state
+        uses: actions/cache/restore@v4
+        with:
+          path: state
+          key: pr-notify-state-${{ github.run_id }}
+          restore-keys: |
+            pr-notify-state-
+
+      - name: Run notifier
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          PR_AUTHOR: francesnkwonta
+          PR_SEARCH_ORG: Ibotta
+        run: python scripts/pr_notify.py
+
+      - name: Save dedupe state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: state
+          key: pr-notify-state-${{ github.run_id }}
