@@ -89,9 +89,9 @@ def post_slack(text):
             print("Slack post failed:", resp.status, file=sys.stderr)
 
 
-def pr_link(pr):
+def pr_ref(pr):
     repo = pr["repository"]["nameWithOwner"]
-    return f"{repo}#{pr['number']} ({pr['url']})"
+    return f"{repo}#{pr['number']}"
 
 
 def collect_comment_ids(pr):
@@ -138,16 +138,16 @@ def main():
             for rid, author in approvals.items():
                 if rid not in seen_approvals:
                     events.append(
-                        f":white_check_mark: *{author}* approved {pr_link(pr)} — {pr['title']}"
+                        f":white_check_mark: *{author}* approved {pr_ref(pr)} — {pr['title']}\n{pr['url']}"
                     )
             new_comments = comment_ids - seen_comments
             if new_comments:
                 events.append(
-                    f":speech_balloon: {len(new_comments)} new comment(s) on {pr_link(pr)} — {pr['title']}"
+                    f":speech_balloon: {len(new_comments)} new comment(s) on {pr_ref(pr)} — {pr['title']}\n{pr['url']}"
                 )
             if is_ready and not ready_notified:
                 events.append(
-                    f":rocket: Ready to merge: {pr_link(pr)} — {pr['title']}"
+                    f":rocket: Ready to merge: {pr_ref(pr)} — {pr['title']}\n{pr['url']}"
                 )
 
         new_state[key] = {
