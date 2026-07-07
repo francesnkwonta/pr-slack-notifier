@@ -17,8 +17,13 @@ nothing is added to the repos you're contributing to.
 
 ## Setup
 
-1. **Create the Slack incoming webhook** pointing at your private channel and
-   copy the URL. (https://api.slack.com/messaging/webhooks)
+1. **Create a Slack Workflow Builder webhook** (no custom app needed):
+   - Slack → Tools → Workflow Builder → Create.
+   - Trigger: "From a webhook."
+   - Add a variable named `text` (type: text).
+   - Add a step "Send a message to a channel" → your channel → insert the
+     `text` variable as the message body.
+   - Publish and copy the webhook URL.
 
 2. **Create a GitHub token** with read access to your org's PRs. Ibotta uses
    SSO, so **authorize the token for the Ibotta org** after creating it:

@@ -91,7 +91,7 @@ def post_slack(text):
 
 def pr_link(pr):
     repo = pr["repository"]["nameWithOwner"]
-    return f"<{pr['url']}|{repo}#{pr['number']}>"
+    return f"{repo}#{pr['number']} ({pr['url']})"
 
 
 def collect_comment_ids(pr):
