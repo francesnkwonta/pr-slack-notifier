@@ -11,6 +11,6 @@ export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 
 source "$HOME/.config/pr-notify/env"
 
-cd "/Users/frances.nkwonta/Documents/GitHub/pr-slack-notifier"
+cd "/Users/frances.nkwonta/IdeaProjects/pr-slack-notifier"
 
 exec python3 scripts/pr_notify.py
