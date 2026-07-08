@@ -1,9 +1,9 @@
 name: PR Slack Notifier
 
 on:
-  schedule:
-    # Every ~10 minutes. GitHub may delay/skip cron under load; this is best-effort.
-    - cron: "*/10 * * * *"
+  # Scheduled polling was moved to a local launchd job (com.frances.pr-notify),
+  # which fires reliably every ~5 min instead of GitHub's heavily-delayed cron.
+  # Kept here as a manual/backup trigger only.
   workflow_dispatch: {}
 
 concurrency:
